@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tecsup.travelmarket.navigation.AppNavigation
 import com.tecsup.travelmarket.ui.theme.TravelMarketTheme
+import com.tecsup.travelmarket.ui.theme.screens.SearchScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

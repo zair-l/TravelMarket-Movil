@@ -17,9 +17,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
         "home" to Icons.Default.Home,
+        "search" to Icons.Default.Search,
+        "profile" to Icons.Default.Person
     )
     val labels = mapOf(
         "home" to "Inicio",
+        "search" to "Buscar",
+        "profile" to "Perfil"
     )
 
     NavigationBar {

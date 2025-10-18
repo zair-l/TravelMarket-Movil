@@ -25,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.android.datatransport.Event
 import com.tecsup.travelmarket.R
 import com.tecsup.travelmarket.data.model.Category
 import com.tecsup.travelmarket.ui.theme.*

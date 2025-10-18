@@ -42,7 +42,7 @@ fun DetailScreen(navController: NavController) {
                 .padding(paddingValues)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.huaca), // Usamos la misma imagen como ejemplo
+                painter = painterResource(id = R.drawable.huaca),
                 contentDescription = "Imagen del lugar",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

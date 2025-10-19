@@ -6,17 +6,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+// Ojo con la ruta de tus imports, puede que necesites ajustarla
 import com.tecsup.travelmarket.ui.theme.components.BottomNavigationBar
-import com.tecsup.travelmarket.ui.theme.screens.DetailsScreen
+import com.tecsup.travelmarket.ui.theme.screens.DetailScreen
+import com.tecsup.travelmarket.ui.theme.screens.HomeScreen
 import com.tecsup.travelmarket.ui.theme.screens.LoginScreen
-import com.tecsup.travelmarket.ui.theme.screens.MainScreen
 import com.tecsup.travelmarket.ui.theme.screens.ProfileScreen
 import com.tecsup.travelmarket.ui.theme.screens.RegisterScreen
 import com.tecsup.travelmarket.ui.theme.screens.SearchScreen
@@ -25,32 +27,40 @@ import com.tecsup.travelmarket.ui.theme.screens.SearchScreen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
+        bottomBar = {
+            if (currentRoute in listOf("home", "search", "profile")) {
+                BottomNavigationBar(navController = navController)
+            }
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "busqueda",
+            startDestination = "login", // La app ahora empieza en el Login
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = "busqueda") {
+            composable("login") {
+                LoginScreen(navController = navController)
+            }
+            composable("register") {
+                RegisterScreen(navController = navController)
+            }
+
+            composable("home") {
+                HomeScreen(navController = navController)
+            }
+            composable("search") {
                 SearchScreen(navController = navController)
             }
-            composable(route = "home") {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Pantalla Home")
-                }
+            composable("profile") {
+                ProfileScreen()
             }
-            composable(route = "perfil") {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Pantalla Perfil")
-                }
-            }
-            composable(route = "details") {
-                DetailsScreen(navController = navController)
+            composable("detail") {
+                DetailScreen(navController = navController)
             }
         }
     }
-    
 }

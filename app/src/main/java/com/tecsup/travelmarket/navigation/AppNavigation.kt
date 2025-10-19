@@ -10,10 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 // Ojo con la ruta de tus imports, puede que necesites ajustarla
 import com.tecsup.travelmarket.ui.theme.components.BottomNavigationBar
 import com.tecsup.travelmarket.ui.theme.screens.DetailScreen
@@ -58,8 +60,20 @@ fun AppNavigation() {
             composable("profile") {
                 ProfileScreen()
             }
-            composable("detail") {
-                DetailScreen(navController = navController)
+            composable(
+                route = "detail/{itemId}",
+                arguments = listOf(navArgument("itemId") { type = NavType.StringType })
+            ) {
+                val itemId = navBackStackEntry?.arguments?.getString("itemId")
+
+                if (itemId != null) {
+                    DetailScreen(
+                        navController = navController,
+                        itemId = itemId
+                    )
+                } else {
+                    Text("Error: ID del item no encontrado")
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,16 +32,16 @@ import com.tecsup.travelmarket.data.model.Evento
 import com.tecsup.travelmarket.data.model.Lugar
 import com.tecsup.travelmarket.data.model.Restaurante
 import com.tecsup.travelmarket.data.model.Transporte
-import com.tecsup.travelmarket.data.repository.LocalRepository
 import com.tecsup.travelmarket.ui.theme.components.EventoCard
 import com.tecsup.travelmarket.ui.theme.components.RestauranteCard
 import com.tecsup.travelmarket.ui.theme.components.TransporteCard
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tecsup.travelmarket.viewmodel.SearchViewModel
 
 
 @Composable
-fun SearchScreen(navController: NavController) {
-    val respositorio = LocalRepository()
-    val allItems = respositorio.getAllItems()
+fun SearchScreen(navController: NavController, viewModel: SearchViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold (
         topBar = { SearchTopBar() }
@@ -52,16 +53,22 @@ fun SearchScreen(navController: NavController) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item { SearchField() }
-            item { Filter() }
+            item { SearchField(
+                query = uiState.searchQuery,
+                onQueryChange = viewModel::onQueryChange
+            ) }
+            item { Filter(
+                selectedCategory = uiState.selectedCategory,
+                onCategorySelected = viewModel::onCategorySelected
+            ) }
             item { Text(text = "Resultados", style = MaterialTheme.typography.headlineMedium) }
-            items(allItems) { item ->
+            items(uiState.results) { item ->
                 when (item) {
                     is Lugar -> {
                         LugarCard(
                             lugar = item,
                             onClick = {
-
+                                navController.navigate("detail/${item.id}")
                             }
                         )
                     }
@@ -69,7 +76,7 @@ fun SearchScreen(navController: NavController) {
                         EventoCard(
                             evento = item,
                             onClick = {
-
+                                navController.navigate("detail/${item.id}")
                             }
                         )
                     }
@@ -77,7 +84,7 @@ fun SearchScreen(navController: NavController) {
                         RestauranteCard(
                             restaurante = item,
                             onClick = {
-
+                                navController.navigate("detail/${item.id}")
                             }
                         )
                     }
@@ -85,7 +92,7 @@ fun SearchScreen(navController: NavController) {
                         TransporteCard(
                             transporte = item,
                             onClick = {
-
+                                navController.navigate("detail/${item.id}")
                             }
                         )
                     }
@@ -120,12 +127,10 @@ fun SearchTopBar() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchField() {
-    var searchQuery by remember { mutableStateOf("") }
-
+fun SearchField(query: String, onQueryChange: (String) -> Unit) {
     OutlinedTextField(
-        value = searchQuery,
-        onValueChange = { searchQuery = it },
+        value = query,
+        onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         placeholder = { Text("Buscar lugares, eventos...") },
         leadingIcon = {
@@ -137,7 +142,7 @@ fun SearchField() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Filter() {
+fun Filter(selectedCategory: String, onCategorySelected: (String) -> Unit) {
     val categorias = listOf("Todos", "Lugares", "Eventos", "Gastronomía", "Transporte")
 
     Column (verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -149,17 +154,10 @@ fun Filter() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(categorias) { categoria ->
-                AssistChip(
-                    onClick = {  },
-                    label = { Text(categoria) },
-                    colors = if (categoria == "Todos") {
-                        AssistChipDefaults.assistChipColors(
-                            containerColor = BluePrimary,
-                            labelColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    } else {
-                        AssistChipDefaults.assistChipColors()
-                    }
+                FilterChip(
+                    selected = (categoria == selectedCategory),
+                    onClick = { onCategorySelected(categoria)},
+                    label = { Text(categoria) }
                 )
             }
         }

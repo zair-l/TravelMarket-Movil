@@ -119,4 +119,35 @@ class LocalRepository {
     fun getAllItems(): List<Any> {
         return sampleLugares + eventosSimulados + restaurantesSimulados + transportesSimulados
     }
+
+    fun getFilteredItems(query: String, categoria: String): List<Any> {
+        val itemsToFilter = if(categoria == "Todos") {
+           getAllItems()
+        } else {
+            getAllItems().filter { item ->
+                when (item) {
+                    is Lugar -> item.categoria == categoria
+                    is Evento -> item.categoria == categoria
+                    is Restaurante -> item.categoria == categoria
+                    is Transporte -> item.categoria == categoria
+                    else -> false
+                }
+            }
+        }
+
+        if (query.isBlank()) {
+            return itemsToFilter
+        }
+
+        return itemsToFilter.filter { item ->
+            val nombre = when (item) {
+                is Lugar -> item.nombre
+                is Evento -> item.nombre
+                is Restaurante -> item.nombre
+                is Transporte -> item.nombre
+                else -> ""
+            }
+            nombre.contains(query, ignoreCase = true)
+        }
+    }
 }

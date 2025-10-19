@@ -2,6 +2,7 @@ package com.tecsup.travelmarket.ui.theme.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,10 +25,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tecsup.travelmarket.ui.theme.BluePrimary
 import com.tecsup.travelmarket.R
+import com.tecsup.travelmarket.data.model.Evento
+import com.tecsup.travelmarket.data.model.Lugar
+import com.tecsup.travelmarket.data.model.Restaurante
+import com.tecsup.travelmarket.data.model.Transporte
+import com.tecsup.travelmarket.data.repository.LocalRepository
+import com.tecsup.travelmarket.ui.theme.components.EventoCard
+import com.tecsup.travelmarket.ui.theme.components.RestauranteCard
+import com.tecsup.travelmarket.ui.theme.components.TransporteCard
 
 
 @Composable
 fun SearchScreen(navController: NavController) {
+    val respositorio = LocalRepository()
+    val allItems = respositorio.getAllItems()
+
     Scaffold (
         topBar = { SearchTopBar() }
     ) { innerPadding ->
@@ -40,7 +52,43 @@ fun SearchScreen(navController: NavController) {
         ) {
             item { SearchField() }
             item { Filter() }
-            item { SuggestionsSection() }
+            item { Text(text = "Resultados", style = MaterialTheme.typography.headlineMedium) }
+            items(allItems) { item ->
+                when (item) {
+                    is Lugar -> {
+                        LugarCard(
+                            lugar = item,
+                            onClick = {
+
+                            }
+                        )
+                    }
+                    is Evento -> {
+                        EventoCard(
+                            evento = item,
+                            onClick = {
+
+                            }
+                        )
+                    }
+                    is Restaurante -> {
+                        RestauranteCard(
+                            restaurante = item,
+                            onClick = {
+
+                            }
+                        )
+                    }
+                    is Transporte -> {
+                        TransporteCard(
+                            transporte = item,
+                            onClick = {
+
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -116,28 +164,19 @@ fun Filter() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SuggestionsSection() {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            text = "Sugerencias",
-            style = MaterialTheme.typography.titleMedium
-        )
-        SuggestionCard()
-    }
-}
 
 @Composable
-fun SuggestionCard() {
+fun LugarCard(lugar: Lugar, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
             Image(
-                painter = painterResource(id = R.drawable.huaca_pucllana),
-                contentDescription = "Huaca Pucllana",
+                painter = painterResource(id = lugar.imagenId),
+                contentDescription = lugar.nombre,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp),
@@ -151,7 +190,7 @@ fun SuggestionCard() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Huaca Pucllana",
+                        text = lugar.nombre,
                         style = MaterialTheme.typography.titleLarge
                     )
                     Surface(
@@ -159,7 +198,7 @@ fun SuggestionCard() {
                         color = MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Text(
-                            text = "Lugares",
+                            text = lugar.categoria,
                             style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -169,7 +208,7 @@ fun SuggestionCard() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Sitio arqueológico pre-inca ubicado en Miraflores. Una pirámide de adobe que data del año 500 d.C. y...",
+                    text = lugar.descripcion,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis

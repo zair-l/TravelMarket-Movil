@@ -117,7 +117,6 @@ class LocalRepository {
     }
 
     fun getAllItems(): List<Any> {
-        // El '+' simplemente suma las listas
         return sampleLugares + eventosSimulados + restaurantesSimulados + transportesSimulados
     }
 }

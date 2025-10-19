@@ -15,14 +15,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.tecsup.travelmarket.ui.theme.BluePrimary // <-- Importamos el color correcto
+import com.tecsup.travelmarket.ui.theme.BluePrimary
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -33,7 +35,7 @@ fun LoginScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BluePrimary), // <-- CAMBIO AQUÍ
+            .background(BluePrimary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(80.dp))
@@ -64,7 +66,6 @@ fun LoginScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(24.dp)
             ) {
-                // ... (El resto del código de los TextFields es igual)
 
                 OutlinedTextField(
                     value = email,
@@ -130,7 +131,7 @@ fun LoginScreen(navController: NavController) {
                     )
                     Text(
                         text = "Regístrate",
-                        color = BluePrimary, // <-- CAMBIO AQUÍ
+                        color = BluePrimary,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             navController.navigate("register")
@@ -140,4 +141,10 @@ fun LoginScreen(navController: NavController) {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    LoginScreen(navController = NavController(LocalContext.current))
 }

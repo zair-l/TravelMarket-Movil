@@ -1,74 +1,66 @@
 package com.tecsup.travelmarket.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.tecsup.travelmarket.ui.theme.screens.DetailsScreen
-import com.tecsup.travelmarket.ui.theme.screens.EventsScreen
+// Ojo con la ruta de tus imports, puede que necesites ajustarla
+import com.tecsup.travelmarket.ui.theme.components.BottomNavigationBar
+import com.tecsup.travelmarket.ui.theme.screens.DetailScreen
+import com.tecsup.travelmarket.ui.theme.screens.HomeScreen
 import com.tecsup.travelmarket.ui.theme.screens.LoginScreen
-import com.tecsup.travelmarket.ui.theme.screens.MainScreen
-import com.tecsup.travelmarket.ui.theme.screens.PlacesScreen
+import com.tecsup.travelmarket.ui.theme.screens.ProfileScreen
 import com.tecsup.travelmarket.ui.theme.screens.RegisterScreen
-import com.tecsup.travelmarket.ui.theme.screens.RestaurantsScreen
-import com.tecsup.travelmarket.ui.theme.screens.TransportScreen
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBarScreen(onMenuClick: (String) -> Unit) {
-    TopAppBar(
-        title = { Text("TravelMarket") }
-    )
-}
+import com.tecsup.travelmarket.ui.theme.screens.SearchScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = {
-            TopBarScreen(onMenuClick = { route ->
-                navController.navigate(route)
-            })
+        bottomBar = {
+            if (currentRoute in listOf("home", "search", "profile")) {
+                BottomNavigationBar(navController = navController)
+            }
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "Inicio",
+            startDestination = "login", // La app ahora empieza en el Login
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = "login") {
+            composable("login") {
                 LoginScreen(navController = navController)
             }
-            composable(route = "register") {
+            composable("register") {
                 RegisterScreen(navController = navController)
             }
-            composable(route = "main") {
-                MainScreen(navController = navController)
+
+            composable("home") {
+                HomeScreen(navController = navController)
             }
-            composable(route = "details") {
-                DetailsScreen(navController = navController)
+            composable("search") {
+                SearchScreen(navController = navController)
             }
-            composable(route = "events") {
-                EventsScreen(navController = navController)
+            composable("profile") {
+                ProfileScreen()
             }
-            composable(route = "places") {
-                PlacesScreen(navController = navController)
-            }
-            composable(route = "restaurants") {
-                RestaurantsScreen(navController = navController)
-            }
-            composable(route = "transport") {
-                TransportScreen(navController = navController)
+            composable("detail") {
+                DetailScreen(navController = navController)
             }
         }
     }
-    
 }

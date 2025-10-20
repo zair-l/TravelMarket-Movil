@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.tecsup.travelmarket.ui.theme.BluePrimary // <-- Importamos el color correcto
+import com.tecsup.travelmarket.ui.theme.BluePrimary 
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -33,7 +33,7 @@ fun LoginScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BluePrimary), // <-- CAMBIO AQUÍ
+            .background(BluePrimary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(80.dp))
@@ -64,7 +64,6 @@ fun LoginScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(24.dp)
             ) {
-                // ... (El resto del código de los TextFields es igual)
 
                 OutlinedTextField(
                     value = email,
@@ -109,7 +108,7 @@ fun LoginScreen(navController: NavController) {
                             popUpTo("login") { inclusive = true }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = BluePrimary), // <-- CAMBIO AQUÍ
+                    colors = ButtonDefaults.buttonColors(containerColor = BluePrimary),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -130,7 +129,7 @@ fun LoginScreen(navController: NavController) {
                     )
                     Text(
                         text = "Regístrate",
-                        color = BluePrimary, // <-- CAMBIO AQUÍ
+                        color = BluePrimary,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             navController.navigate("register")

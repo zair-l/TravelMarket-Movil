@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.tecsup.travelmarket.ui.theme.BluePrimary // <-- Importamos el color correcto
+import com.tecsup.travelmarket.ui.theme.BluePrimary
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -65,7 +65,6 @@ fun RegisterScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(24.dp)
             ) {
-                // ... (El resto del código de los TextFields es igual)
 
                 Text(
                     text = "Crear Cuenta",

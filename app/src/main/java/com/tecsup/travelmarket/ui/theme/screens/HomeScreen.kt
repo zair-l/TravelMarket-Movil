@@ -50,7 +50,7 @@ fun HomeScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(BluePrimary) // Asumiendo que tienes este color
+                    .background(BluePrimary)
                     .padding(horizontal = 16.dp, vertical = 24.dp)
             ) {
                 Text("TravelMarket", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)

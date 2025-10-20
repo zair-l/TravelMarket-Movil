@@ -9,6 +9,7 @@ data class Restaurante(
     val direccion: String,
     val tipoCocina: String,
     val rangoPrecio: String,
+    val urlEnlace: String,
     @DrawableRes val imagenId: Int,
     val categoria: String = "Gastronomía"
 )

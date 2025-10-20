@@ -9,6 +9,7 @@ data class Evento(
     val fecha: String,
     val hora: String,
     val ubicacion: String,
+    val urlEnlace: String,
     @DrawableRes val imagenId: Int,
     val categoria: String = "Eventos",
     val isFavorite: Boolean = false

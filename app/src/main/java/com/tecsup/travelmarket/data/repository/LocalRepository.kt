@@ -15,6 +15,7 @@ class LocalRepository {
             descripcion = "La Huaca Pucllana es un centro ceremonial precolombino de la cultura Lima. Destaca por su gran pirámide escalonada de adobe en medio de Miraflores.",
             direccion = "Calle General Borgoño cuadra 8, Miraflores",
             horario = "9:00 AM - 5:00 PM",
+            urlEnlace = "",
             imagenId = R.drawable.huaca_pucllana
         ),
         Lugar(
@@ -23,6 +24,7 @@ class LocalRepository {
             descripcion = "Un impresionante conjunto de trece fuentes ornamentales, cibernéticas e interactivas donde el agua, la música, la luz y las imágenes se mezclan.",
             direccion = "Cercado de Lima",
             horario = "3:00 PM - 10:00 PM",
+            urlEnlace = "",
             imagenId = R.drawable.circuito_magico
         ),
         Lugar(
@@ -31,6 +33,7 @@ class LocalRepository {
             descripcion = "Conocido por su ambiente bohemio, Barranco es famoso por el Puente de los Suspiros, sus coloridas casonas, galerías de arte y una vibrante vida nocturna.",
             direccion = "Barranco",
             horario = "24 horas",
+            urlEnlace = "",
             imagenId = R.drawable.barranco,
         ),
         Lugar(
@@ -39,6 +42,7 @@ class LocalRepository {
             descripcion = "El corazón histórico de Lima, rodeada por la Catedral, el Palacio de Gobierno y el Palacio Municipal. Un lugar lleno de historia y arquitectura colonial.",
             direccion = "Cercado de Lima",
             horario = "24 horas",
+            urlEnlace = "",
             imagenId = R.drawable.plaza_armas,
         )
     )
@@ -51,6 +55,7 @@ class LocalRepository {
             fecha = "25 de Octubre",
             hora = "7:00 PM",
             ubicacion = "Estadio Nacional",
+            urlEnlace = "",
             imagenId = R.drawable.estadio_nacional
         )
     )
@@ -63,6 +68,7 @@ class LocalRepository {
             direccion = "Av. Pedro de Osma 301, Barranco",
             tipoCocina = "Peruana de Altura",
             rangoPrecio = "$$$$",
+            urlEnlace = "https://centralrestaurante.com.pe/",
             imagenId = R.drawable.central
         ),
         Restaurante(
@@ -72,6 +78,7 @@ class LocalRepository {
             direccion = "Calle San Martin 399, Miraflores",
             tipoCocina = "Nikkei",
             rangoPrecio = "$$$$",
+            urlEnlace = "",
             imagenId = R.drawable.maido
         )
     )
@@ -83,6 +90,7 @@ class LocalRepository {
             descripcion = "Sistema de buses de tránsito rápido que conecta el norte y sur de Lima.",
             tipo = "Bus Público",
             cobertura = "Norte-Sur (vía Expresa)",
+            urlEnlace = "",
             imagenId = R.drawable.metropolitano
         )
     )

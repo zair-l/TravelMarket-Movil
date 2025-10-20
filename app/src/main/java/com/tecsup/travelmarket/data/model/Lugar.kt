@@ -9,6 +9,7 @@ data class Lugar(
     val direccion: String,
     val horario: String,
     val categoria: String = "Lugares",
+    val urlEnlace: String,
     @DrawableRes val imagenId: Int,
     val isFavorite: Boolean = false
 )

@@ -8,6 +8,7 @@ data class Transporte(
     val descripcion: String,
     val tipo: String,
     val cobertura: String,
+    val urlEnlace: String,
     @DrawableRes val imagenId: Int,
     val categoria: String = "Transporte"
 )

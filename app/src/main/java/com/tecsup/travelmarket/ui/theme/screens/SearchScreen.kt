@@ -217,9 +217,3 @@ fun LugarCard(lugar: Lugar, onClick: () -> Unit) {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun LogingScreenPreview() {
-    SearchScreen(navController = NavController(LocalContext.current))
-}

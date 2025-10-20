@@ -41,7 +41,7 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "login", // La app ahora empieza en el Login
+            startDestination = "login",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("login") {
@@ -71,8 +71,6 @@ fun AppNavigation() {
                         navController = navController,
                         itemId = itemId
                     )
-                } else {
-                    Text("Error: ID del item no encontrado")
                 }
             }
         }

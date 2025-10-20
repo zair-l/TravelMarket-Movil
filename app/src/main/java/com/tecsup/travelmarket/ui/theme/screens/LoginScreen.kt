@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.tecsup.travelmarket.ui.theme.BluePrimary 
+import com.tecsup.travelmarket.ui.theme.BluePrimary
 
 @Composable
 fun LoginScreen(navController: NavController) {

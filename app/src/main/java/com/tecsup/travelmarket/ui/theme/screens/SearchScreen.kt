@@ -2,6 +2,7 @@ package com.tecsup.travelmarket.ui.theme.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,25 +10,32 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tecsup.travelmarket.ui.theme.BluePrimary
-import com.tecsup.travelmarket.R
+import com.tecsup.travelmarket.data.model.Evento
+import com.tecsup.travelmarket.data.model.Lugar
+import com.tecsup.travelmarket.data.model.Restaurante
+import com.tecsup.travelmarket.data.model.Transporte
+import com.tecsup.travelmarket.ui.theme.components.EventoCard
+import com.tecsup.travelmarket.ui.theme.components.RestauranteCard
+import com.tecsup.travelmarket.ui.theme.components.TransporteCard
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tecsup.travelmarket.viewmodel.SearchViewModel
 
 
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(navController: NavController, viewModel: SearchViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Scaffold (
         topBar = { SearchTopBar() }
     ) { innerPadding ->
@@ -38,9 +46,51 @@ fun SearchScreen(navController: NavController) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item { SearchField() }
-            item { Filter() }
-            item { SuggestionsSection() }
+            item { SearchField(
+                query = uiState.searchQuery,
+                onQueryChange = viewModel::onQueryChange
+            ) }
+            item { Filter(
+                selectedCategory = uiState.selectedCategory,
+                onCategorySelected = viewModel::onCategorySelected
+            ) }
+            item { Text(text = "Resultados", style = MaterialTheme.typography.headlineMedium) }
+            items(uiState.results) { item ->
+                when (item) {
+                    is Lugar -> {
+                        LugarCard(
+                            lugar = item,
+                            onClick = {
+                                navController.navigate("detail/${item.id}")
+                            }
+                        )
+                    }
+                    is Evento -> {
+                        EventoCard(
+                            evento = item,
+                            onClick = {
+                                navController.navigate("detail/${item.id}")
+                            }
+                        )
+                    }
+                    is Restaurante -> {
+                        RestauranteCard(
+                            restaurante = item,
+                            onClick = {
+                                navController.navigate("detail/${item.id}")
+                            }
+                        )
+                    }
+                    is Transporte -> {
+                        TransporteCard(
+                            transporte = item,
+                            onClick = {
+                                navController.navigate("detail/${item.id}")
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -70,12 +120,10 @@ fun SearchTopBar() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchField() {
-    var searchQuery by remember { mutableStateOf("") }
-
+fun SearchField(query: String, onQueryChange: (String) -> Unit) {
     OutlinedTextField(
-        value = searchQuery,
-        onValueChange = { searchQuery = it },
+        value = query,
+        onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         placeholder = { Text("Buscar lugares, eventos...") },
         leadingIcon = {
@@ -87,7 +135,7 @@ fun SearchField() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Filter() {
+fun Filter(selectedCategory: String, onCategorySelected: (String) -> Unit) {
     val categorias = listOf("Todos", "Lugares", "Eventos", "Gastronomía", "Transporte")
 
     Column (verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -99,45 +147,29 @@ fun Filter() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(categorias) { categoria ->
-                AssistChip(
-                    onClick = { /* TODO: Logica de filtro */},
-                    label = { Text(categoria) },
-                    colors = if (categoria == "Todos") {
-                        AssistChipDefaults.assistChipColors(
-                            containerColor = BluePrimary,
-                            labelColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    } else {
-                        AssistChipDefaults.assistChipColors()
-                    }
+                FilterChip(
+                    selected = (categoria == selectedCategory),
+                    onClick = { onCategorySelected(categoria)},
+                    label = { Text(categoria) }
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SuggestionsSection() {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            text = "Sugerencias",
-            style = MaterialTheme.typography.titleMedium
-        )
-        SuggestionCard()
-    }
-}
 
 @Composable
-fun SuggestionCard() {
+fun LugarCard(lugar: Lugar, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
             Image(
-                painter = painterResource(id = R.drawable.huaca_pucllana),
-                contentDescription = "Huaca Pucllana",
+                painter = painterResource(id = lugar.imagenId),
+                contentDescription = lugar.nombre,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp),
@@ -151,7 +183,7 @@ fun SuggestionCard() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Huaca Pucllana",
+                        text = lugar.nombre,
                         style = MaterialTheme.typography.titleLarge
                     )
                     Surface(
@@ -159,7 +191,7 @@ fun SuggestionCard() {
                         color = MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Text(
-                            text = "Lugares",
+                            text = lugar.categoria,
                             style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -169,7 +201,7 @@ fun SuggestionCard() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Sitio arqueológico pre-inca ubicado en Miraflores. Una pirámide de adobe que data del año 500 d.C. y...",
+                    text = lugar.descripcion,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis

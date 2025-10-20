@@ -15,3 +15,5 @@ val PurpleCategory = Color(0xFF9F52D9)
 val OrangeCategory = Color(0xFFF57C00)
 val GreenCategory = Color(0xFF388E3C)
 val RedAction = Color(0xFFD32F2F)
+
+val OrangeButton = Color(0xFFF57C00)

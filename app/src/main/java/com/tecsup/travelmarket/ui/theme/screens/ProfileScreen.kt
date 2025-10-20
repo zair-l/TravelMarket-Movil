@@ -1,7 +1,9 @@
 package com.tecsup.travelmarket.ui.theme.screens
-
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -17,14 +19,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.tecsup.travelmarket.data.model.Evento
+import com.tecsup.travelmarket.data.model.Lugar
 import com.tecsup.travelmarket.ui.theme.BluePrimary
 import com.tecsup.travelmarket.ui.theme.RedAction
+import com.tecsup.travelmarket.viewmodel.LugarViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavController,
+    lugarViewModel: LugarViewModel
+) {
+    val favoritos = lugarViewModel.favoritos.value
+
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -71,7 +83,16 @@ fun ProfileScreen() {
                         Text("Configuración", fontSize = 16.sp)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate("login") {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            }
+                    ) {
                         Icon(Icons.Default.Logout, contentDescription = "Cerrar Sesión", tint = RedAction)
                         Spacer(modifier = Modifier.width(16.dp))
                         Text("Cerrar Sesión", fontSize = 16.sp, color = RedAction)
@@ -96,17 +117,60 @@ fun ProfileScreen() {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Mis Favoritos", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = "No hay favoritos", tint = Color.Gray, modifier = Modifier.size(60.dp))
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("No tienes favoritos", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Gray)
-                        Text("Explora lugares y eventos para agregarlos a tus favoritos", color = Color.Gray, modifier = Modifier.padding(horizontal = 24.dp), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    if (favoritos.isEmpty()) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(Icons.Default.FavoriteBorder, contentDescription = "No hay favoritos", tint = Color.Gray, modifier = Modifier.size(60.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("No tienes favoritos", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Gray)
+                            Text(
+                                text = "Explora lugares y eventos para agregarlos a tus favoritos",
+                                color = Color.Gray,
+                                modifier = Modifier.padding(horizontal = 24.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(favoritos) { item ->
+                                FavoriteItemCard(item = item) { itemId ->
+                                    navController.navigate("detail/$itemId")
+                                }
+                            }
+                        }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun FavoriteItemCard(item: Any, onClick: (String) -> Unit) {
+    val (id, nombre, descripcion) = when (item) {
+        is Lugar -> Triple(item.id, item.nombre, item.categoria)
+        is Evento -> Triple(item.id, item.nombre, item.categoria)
+        else -> Triple("", "Desconocido", "")
+    }
+
+    if (id.isBlank()) return
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick(id) },
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+        Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Filled.Favorite, contentDescription = "Favorito", tint = RedAction)
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(nombre, fontWeight = FontWeight.Bold)
+                Text(descripcion, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
             }
         }
     }

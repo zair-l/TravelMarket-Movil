@@ -34,7 +34,7 @@ fun RegisterScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BluePrimary), // <-- CAMBIO AQUÍ
+            .background(BluePrimary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(80.dp))
@@ -117,7 +117,7 @@ fun RegisterScreen(navController: NavController) {
                             popUpTo("login") { inclusive = true }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = BluePrimary), // <-- CAMBIO AQUÍ
+                    colors = ButtonDefaults.buttonColors(containerColor = BluePrimary),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -137,7 +137,7 @@ fun RegisterScreen(navController: NavController) {
                     )
                     Text(
                         text = "Inicia Sesión",
-                        color = BluePrimary, // <-- CAMBIO AQUÍ
+                        color = BluePrimary,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             navController.navigate("login") {

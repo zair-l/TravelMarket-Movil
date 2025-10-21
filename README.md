@@ -20,3 +20,18 @@ Lluvia de ideas:
 
 Prototipo en Figma:
 https://www.figma.com/make/aCovUetik5zoWvHI5xzbh5/TravelMarket-App-Prototype?node-id=0-1&p=f&t=0rm2S4zRIIplKdz4-0
+
+## Funcionalidades Implementadas
+* Navegación principal con Bottom Navigation Bar (Home, Buscar, Perfil).
+* Pantallas de Login y Registro funcionales.
+* Pantalla de Home con categorías y lista de "Recomendados".
+* Conexión a un repositorio local simulado para mostrar datos.
+* Pantalla de Búsqueda con filtro por texto y categoría.
+* Pantalla de Detalle que muestra información dinámica según el ítem seleccionado.
+
+## Pantallas
+![Pantalla de Login](https://i.imgur.com/4FjSNgQ.png)
+![Pantalla de Home](https://i.imgur.com/r2lMmiv.png)
+![Pantalla de Búsqueda](https://i.imgur.com/6lydjQP.png)
+![Pantalla de Detalle](https://i.imgur.com/5UoqBPb.png)
+![Pantalla de Perfil](https://i.imgur.com/IJgU8Rg.png)

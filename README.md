@@ -7,8 +7,8 @@ Luna Córdova Fabrizio Humberto - diseñador UI - rama: luna
 Flores Revatta Emanuel José Julián - Tester/documentador - rama: jose
 
 Descripción del proyecto:
-TavelMarket es una apicacion móvil diseñada para ayudar a los turistas a conocer nuevos lugares.
-El objetivo es facilitar la exploración de Lugares turísticos, eventos, restaurantes y opciones de transportes.
+TavelMarket es una apicacion móvil diseñada como guía para los turistas, está desarrollada en Android Studio usando Jetpack Compose para la interfaz y el lenguaje Kotlin para la lógica. 
+El objetivo es proporcionar a los usuarios información detallada acerca de los puntos de interés y servicios útiles, englobando diversas categorías como Lugares destacados, Eventos, Gastronomía y Transporte.
 
 Lluvia de ideas:
 - Búsqueda de lugares turísticos.
